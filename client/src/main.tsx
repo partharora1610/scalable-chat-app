@@ -5,6 +5,7 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthPage from "./pages/AuthPage.tsx";
 import RootLayout from "./pages/RootLayout.tsx";
+import ChatPage from "./pages/ChatPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "auth",
         element: <AuthPage />,
+      },
+      {
+        path: "chat",
+        element: <ChatPage />,
       },
     ],
   },
