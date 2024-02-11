@@ -27,15 +27,15 @@ app.use(express.urlencoded({ extended: true }));
 // USING EXPRESS SESSION MIDDLEWARE BOTH ON EXPRESS AND SOCKET.IO SERVER
 app.use(sessionMiddleware);
 
+io.use(wrap(sessionMiddleware));
+
 io.on("connect", (socket) => {
-  console.log("Io connected!!");
   console.log(socket.id);
-  // console.log(socket.request);
   // @ts-ignore
   console.log(socket.request.session);
 });
 
-io.use(wrap(sessionMiddleware));
+// I am not getting the session.user.username here ?? lets us inveStigate why  ??
 
 app.use("/api/auth", authRouter);
 

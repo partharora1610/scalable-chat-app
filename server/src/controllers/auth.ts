@@ -16,6 +16,10 @@ const registerFormSchema = z.object({
 
 export const Login = async (req: Request, res: Response) => {
   try {
+    if (req.session.user) {
+      console.log(req.session.user.username);
+    }
+
     const { email, password } = req.body;
 
     const formData = { email, password };

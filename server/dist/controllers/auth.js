@@ -50,6 +50,9 @@ const registerFormSchema = z.object({
 });
 const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        if (req.session.user) {
+            console.log(req.session.user.username);
+        }
         const { email, password } = req.body;
         const formData = { email, password };
         loginFormSchema.parse(formData);
