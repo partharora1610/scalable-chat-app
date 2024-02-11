@@ -21,6 +21,7 @@ const RateLimiter = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     if (!response) {
         return res.status(429).json({ message: "Too many requests" });
     }
+    console.log(response);
     // TODO => CHNAGE THE TYPE
     if (response[0][1] > 10) {
         return res.status(429).json({ message: "THAM JAA BHAII!! ARAAM SE" });

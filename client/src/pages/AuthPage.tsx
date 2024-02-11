@@ -9,7 +9,8 @@ const AuthPage = () => {
 
   return (
     <div className="max-w-[400px] m-auto border-2 border-black p-4 rounded-md">
-      {mode == "login" ? <LoginForm /> : <SignupForm />}
+      {/* {mode == "login" ? <LoginForm /> : <SignupForm />} */}
+      <LoginForm />
     </div>
   );
 };

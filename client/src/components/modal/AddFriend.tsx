@@ -1,5 +1,11 @@
-"use client";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,30 +16,41 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 
+const AddFriend = () => {
+  return (
+    <Dialog>
+      <DialogTrigger className="bg-indigo-500 text-white px-4 rounded-md">
+        ADD
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add your friends on the platform</DialogTitle>
+          <DialogDescription>
+            <ComponentForm />
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default AddFriend;
+
 const formSchema = z.object({
-  email: z.string(),
-  password: z.string(),
   username: z.string(),
-  name: z.string(),
-  confirmPassword: z.string(),
 });
 
-export const SignupForm = () => {
+const ComponentForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
       username: "",
-      name: "",
     },
   });
 
@@ -41,16 +58,9 @@ export const SignupForm = () => {
     console.log(values);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          email: values.email,
-          password: values.password,
-          username: values.username,
-          name: values.name,
-          confirmPassword: values.confirmPassword,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/api/", {
+        username: values.username,
+      });
 
       console.log(response.data);
     } catch (error) {
@@ -63,31 +73,15 @@ export const SignupForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Enter your friends username</FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
+                {/* This is your public display name. */}
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -1,3 +1,4 @@
+import AddFriend from "@/components/modal/AddFriend";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -82,7 +83,10 @@ const ChatPage = () => {
           <div className="mb-8">
             <Input placeholder="search friends" />
           </div>
-          <h3 className="font-bold text-lg mb-6">Friend List</h3>
+          <div className="flex mb-8 justify-between p-2">
+            <h3 className="font-bold text-lg mb-6">My friends</h3>
+            <AddFriend />
+          </div>
 
           <div className="flex flex-col gap-6">
             {FRIENDS.map((f, index) => (
