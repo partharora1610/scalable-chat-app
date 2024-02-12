@@ -65,6 +65,8 @@ const FRIENDS = [
   },
 ];
 const ChatPage = () => {
+  // send setFriends to the useSocket hook and then update this from there...
+  // const [friends, setFriends] = useState<(typeof FRIENDS)[number][]>(FRIENDS);
   const [selectedFriend, setSelectedFriend] = useState(FRIENDS[0]);
 
   const handleFriendSelect = (friend: (typeof FRIENDS)[0]) => {

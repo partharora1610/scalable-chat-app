@@ -18,6 +18,8 @@ model User{
   email String @unique
   password String
 
+  userId String @unique  
+
   messages Message[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -28,10 +30,12 @@ model Message{
   id Int @id @default(autoincrement())
   text String
   
-  user User @relation(fields: [userId], references: [id])
-  
-  userId Int
+  user User @relation(fields: [id], references: [id])
+
+
+  userId String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+
 

@@ -5,6 +5,8 @@ import { Server } from "socket.io";
 import helmet from "helmet";
 import authRouter from "./routes/authRouter";
 import sessionMiddleware, { wrap } from "./middlewares/session-middleware";
+import socketAuthorization from "./middlewares/socket-middleware";
+import { addFriend } from "./controllers/socket";
 
 dotenv.config();
 
@@ -15,7 +17,6 @@ const server = require("http").createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
-    // This was the error....
     credentials: true,
   },
 });
@@ -32,11 +33,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
 
 io.use(wrap(sessionMiddleware));
+io.use(socketAuthorization);
 
 io.on("connect", (socket) => {
   console.log(socket.id);
+
   // @ts-ignore
-  console.log(socket.request.session.user);
+  console.log(socket.user);
+
+  // This is not working
+  socket.on("add-friend", (data, cb) => {
+    addFriend({ socket, data, cb });
+  });
 });
 
 app.use("/api/auth", authRouter);

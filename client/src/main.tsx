@@ -7,6 +7,7 @@ import AuthPage from "./pages/AuthPage.tsx";
 import RootLayout from "./pages/RootLayout.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
+import UserContext from "./context/AccountContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    {/* <UserContext> */}
     <RouterProvider router={router} />
+    {/* </UserContext> */}
   </React.StrictMode>
 );

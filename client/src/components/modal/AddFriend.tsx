@@ -20,9 +20,12 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
+import socket from "@/socket";
+import { useSocket } from "@/hooks/useSocket";
 
 const AddFriend = () => {
+  // useSocket();
+
   return (
     <Dialog>
       <DialogTrigger className="bg-indigo-500 text-white px-4 rounded-md">
@@ -54,18 +57,25 @@ const ComponentForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    // Cant emit this message
 
-    try {
-      const response = await axios.post("http://localhost:5000/api/", {
+    socket.emit(
+      "add-friend",
+      {
         username: values.username,
-      });
+      },
+      ({ error, done }: any) => {
+        if (!done) {
+          form.setError("username", {
+            message: error,
+          });
+          return;
+        }
 
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+        form.reset();
+      }
+    );
   };
 
   return (
@@ -80,9 +90,7 @@ const ComponentForm = () => {
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
-              <FormDescription>
-                {/* This is your public display name. */}
-              </FormDescription>
+              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}

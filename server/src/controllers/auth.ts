@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as z from "zod";
 import bycrptjs from "bcryptjs";
 import { db } from "../db";
+import { v4 as uuidv4 } from "uuid";
 
 const loginFormSchema = z.object({
   email: z.string().email().min(5).max(255),
@@ -16,10 +17,6 @@ const registerFormSchema = z.object({
 
 export const Login = async (req: Request, res: Response) => {
   try {
-    if (req.session.user) {
-      console.log(req.session.user.username);
-    }
-
     const { email, password } = req.body;
 
     const formData = { email, password };
@@ -44,6 +41,7 @@ export const Login = async (req: Request, res: Response) => {
     req.session.user = {
       username: existingUser.username,
       id: existingUser.id,
+      userId: existingUser.userId,
     };
 
     res.status(200).json({
@@ -76,10 +74,13 @@ export const Register = async (req: Request, res: Response) => {
 
     const hashedPassword = await bycrptjs.hash(password, 12);
 
+    const userId = uuidv4();
+
     const newUser = await db.user.create({
       data: {
         email,
         password: hashedPassword,
+        userId,
         username,
         name,
       },
@@ -88,6 +89,7 @@ export const Register = async (req: Request, res: Response) => {
     req.session.user = {
       username,
       id: newUser.id,
+      userId: newUser.userId,
     };
 
     res.status(200).json({
