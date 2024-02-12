@@ -38,10 +38,19 @@ export const LoginForm = () => {
         {
           email: values.email,
           password: values.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "http://localhost:5173",
+            "Access-Control-Allow-Credentials": true,
+          },
+          withCredentials: true,
         }
       );
 
-      console.log(response.data);
+      console.log(response);
     } catch (error) {
       console.error(error);
     }

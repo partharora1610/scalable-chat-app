@@ -14,17 +14,21 @@ const server = require("http").createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
+    // This was the error....
     credentials: true,
   },
 });
 
-app.use(cors({ origin: "*" }));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// USING EXPRESS SESSION MIDDLEWARE BOTH ON EXPRESS AND SOCKET.IO SERVER
 app.use(sessionMiddleware);
 
 io.use(wrap(sessionMiddleware));
@@ -32,10 +36,8 @@ io.use(wrap(sessionMiddleware));
 io.on("connect", (socket) => {
   console.log(socket.id);
   // @ts-ignore
-  console.log(socket.request.session);
+  console.log(socket.request.session.user);
 });
-
-// I am not getting the session.user.username here ?? lets us inveStigate why  ??
 
 app.use("/api/auth", authRouter);
 

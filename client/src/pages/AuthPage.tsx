@@ -1,5 +1,4 @@
 import { LoginForm } from "@/components/shared/forms/LoginForm";
-import { SignupForm } from "@/components/shared/forms/SignupForm";
 import { useSearchParams } from "react-router-dom";
 
 const AuthPage = () => {
