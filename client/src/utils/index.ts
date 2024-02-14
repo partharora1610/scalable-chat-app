@@ -8,14 +8,18 @@ export const timestampTo24HourClock = (timestamp: number): string => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-export const convertMessagesToObjects = (
-  messages: Message[]
-): ConvertedMessage[] => {
-  const convertedMessages: ConvertedMessage[] = [];
+export const convertMessagesToObjects = (messages: any[]): any[] => {
+  const convertedMessages: any[] = [];
 
   messages.forEach((message) => {
     const date = new Date(message.timestamp * 1000);
-    const dateString = date.toDateString();
+
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "short",
+      day: "2-digit",
+      month: "long",
+    };
+    const dateString = date.toLocaleDateString("en-US", options);
 
     const convertedMessageIndex = convertedMessages.findIndex(
       (cm) => cm.date === dateString
@@ -24,7 +28,7 @@ export const convertMessagesToObjects = (
     if (convertedMessageIndex !== -1) {
       convertedMessages[convertedMessageIndex].messages.push(message);
     } else {
-      const newConvertedMessage: ConvertedMessage = {
+      const newConvertedMessage: any = {
         date: dateString,
         messages: [message],
       };
@@ -32,9 +36,15 @@ export const convertMessagesToObjects = (
     }
   });
 
+  convertedMessages.forEach((cm) => {
+    cm.messages.sort((a: any, b: any) => a.timestamp - b.timestamp);
+  });
+
+  console.log(convertedMessages);
+
   return convertedMessages;
 };
 
-export const sortMessagesByTimestamp = (messages: any[]): Message[] => {
+export const sortMessagesByTimestamp = (messages: any[]): any[] => {
   return messages.sort((a, b) => a.timestamp - b.timestamp);
 };

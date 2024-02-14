@@ -103,7 +103,6 @@ export const parseFriendList = async (friendList: any) => {
     });
   }
 
-  // console.log(newFriendList);
   return newFriendList;
 };
 

@@ -40,7 +40,6 @@ export const Login = async (req: Request, res: Response) => {
 
     req.session.user = {
       username: existingUser.username,
-      id: existingUser.id,
       userId: existingUser.userId,
     };
 
@@ -88,7 +87,6 @@ export const Register = async (req: Request, res: Response) => {
 
     req.session.user = {
       username,
-      id: newUser.id,
       userId: newUser.userId,
     };
 

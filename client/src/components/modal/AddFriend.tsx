@@ -21,7 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import socket from "@/socket";
-import { useSocket } from "@/hooks/useSocket";
 import { useContext } from "react";
 import { FriendContext } from "@/context/FriendContext";
 
@@ -30,8 +29,8 @@ const AddFriend = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="bg-indigo-500 text-white px-4 rounded-md">
-        ADD
+      <DialogTrigger className="bg-indigo-500 text-white rounded-md w-full py-3">
+        ADD FRIEND
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

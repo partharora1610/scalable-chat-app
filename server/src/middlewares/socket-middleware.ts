@@ -61,6 +61,7 @@ export const parseMessages = (messages: string[]) => {
       to: array[0],
       from: array[1],
       message: array[2],
+      timestamp: array[3],
     };
   });
 

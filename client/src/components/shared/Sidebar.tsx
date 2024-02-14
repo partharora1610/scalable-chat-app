@@ -10,14 +10,17 @@ const Sidebar = () => {
   return (
     <div className="col-span-1 px-6 py-8 border-r-2 border-slate-200">
       <div className="mb-8">
-        <Input placeholder="Search" className="bg-indigo-100 rounded-lg py-6" />
+        {/* <Input placeholder="Search" className="bg-indigo-100 rounded-lg py-6" /> */}
       </div>
-      <div className="flex mb-8 justify-between p-2">
-        <h3 className="font-bold text-lg mb-6">My friends</h3>
+      <div className="mb-8 p-2 w-full">
         <AddFriend />
       </div>
 
       <div className="flex flex-col gap-4">
+        <h3 className="font-bold text-xl mb-2 capitalize text-slate-700">
+          My friends
+        </h3>
+
         {friends.length === 0 && (
           <div className="text-center text-gray-500">No friends found</div>
         )}
