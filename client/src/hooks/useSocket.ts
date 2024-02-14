@@ -1,13 +1,20 @@
+import { AccountContext } from "@/context/AccountContext";
 import socket from "@/socket";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 export const useSocket = () => {
+  const { setFriends } = useContext(AccountContext);
+
   useEffect(() => {
-    // Connect to the socket server
     socket.connect();
 
     socket.on("friends_list", (data) => {
       console.log(data);
+      console.log("friends list");
+      setFriends((prev: any) => [
+        ...prev,
+        { username: data.username, userId: data.userId, connected: true },
+      ]);
     });
 
     socket.on("connect_error", (error) => {

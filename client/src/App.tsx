@@ -1,7 +1,15 @@
+import UserContext from "./context/AccountContext";
+import FriendContextProvider from "./context/FriendContext";
+import Views from "./pages/Views";
+
 function App() {
   return (
     <>
-      <div className="">ello World</div>
+      <UserContext>
+        <FriendContextProvider>
+          <Views />
+        </FriendContextProvider>
+      </UserContext>
     </>
   );
 }

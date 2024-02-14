@@ -45,7 +45,7 @@ export const Login = async (req: Request, res: Response) => {
     };
 
     res.status(200).json({
-      message: "User signed in successfully",
+      loggedIn: true,
       status: "success",
       user: existingUser,
     });
@@ -93,10 +93,28 @@ export const Register = async (req: Request, res: Response) => {
     };
 
     res.status(200).json({
-      message: "User created successfully",
+      loggedIn: true,
       status: "success",
       user: newUser,
     });
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+};
+
+export const isUserLoggedIn = async (req: Request, res: Response) => {
+  try {
+    console.log(req.session.user);
+
+    if (req.session.user && req.session.user.username) {
+      return res.status(200).json({
+        loggedIn: true,
+        username: req.session.user.username,
+      });
+    }
+
+    console.log("User not logged in");
+    res.status(200).json({ loggedIn: false });
   } catch (error) {
     res.status(400).json({ error });
   }

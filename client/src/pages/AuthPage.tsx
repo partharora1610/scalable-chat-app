@@ -1,10 +1,18 @@
 import { LoginForm } from "@/components/shared/forms/LoginForm";
-import { useSearchParams } from "react-router-dom";
+import { AccountContext } from "@/context/AccountContext";
+import { useContext } from "react";
+// import { useSearchParams } from "react-router-dom";
 
 const AuthPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useContext(AccountContext);
 
-  const mode = searchParams.get("mode");
+  if (user.loggedIn) {
+    return <div>You are already logged in</div>;
+  }
+
+  // const [searchParams, setSearchParams] = useSearchParams();
+
+  // const mode = searchParams.get("mode");
 
   return (
     <div className="max-w-[400px] m-auto border-2 border-black p-4 rounded-md">

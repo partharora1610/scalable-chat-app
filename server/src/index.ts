@@ -6,7 +6,7 @@ import helmet from "helmet";
 import authRouter from "./routes/authRouter";
 import sessionMiddleware, { wrap } from "./middlewares/session-middleware";
 import socketAuthorization from "./middlewares/socket-middleware";
-import { addFriend } from "./controllers/socket";
+import { addFriend, disconnectUser } from "./controllers/socket";
 
 dotenv.config();
 
@@ -41,9 +41,12 @@ io.on("connect", (socket) => {
   // @ts-ignore
   console.log(socket.user);
 
-  // This is not working
   socket.on("add-friend", (data, cb) => {
     addFriend({ socket, data, cb });
+  });
+
+  socket.on("disconnect", () => {
+    disconnectUser(socket);
   });
 });
 

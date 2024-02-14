@@ -16,6 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { AccountContext } from "@/context/AccountContext";
+import { useContext } from "react";
 
 const formSchema = z.object({
   email: z.string(),
@@ -26,6 +29,8 @@ const formSchema = z.object({
 });
 
 export const SignupForm = () => {
+  const { setUser } = useContext(AccountContext);
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,7 +57,11 @@ export const SignupForm = () => {
         }
       );
 
-      console.log(response.data);
+      if (response.status === 200) {
+        console.log(response.data);
+        setUser({ ...response.data });
+        navigate("/chat");
+      }
     } catch (error) {
       console.error(error);
     }

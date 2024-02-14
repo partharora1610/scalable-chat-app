@@ -36,7 +36,6 @@ const sessionMiddleware = session({
 });
 
 export const wrap = (middleware: any) => (socket: any, next: any) => {
-  console.log("wrap middleware");
   return middleware(socket.request, {}, next);
 };
 
