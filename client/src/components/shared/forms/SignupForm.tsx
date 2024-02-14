@@ -43,7 +43,7 @@ export const SignupForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    // console.log(values);
 
     try {
       const response = await axios.post(
@@ -58,7 +58,7 @@ export const SignupForm = () => {
       );
 
       if (response.status === 200) {
-        console.log(response.data);
+        // console.log(response.data);
         setUser({ ...response.data });
         navigate("/chat");
       }

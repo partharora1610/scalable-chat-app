@@ -1,16 +1,12 @@
-import AddFriend from "@/components/modal/AddFriend";
 import Sidebar from "@/components/shared/Sidebar";
 import { Input } from "@/components/ui/input";
-import FriendContextProvider, { FriendContext } from "@/context/FriendContext";
-import { useContext, useState } from "react";
+import { useSocket } from "@/hooks/useSocket";
 
 const ChatPage = () => {
-  const { friends } = useContext(FriendContext);
-  const [selectedFriend, setSelectedFriend] = useState();
+  useSocket();
 
   const formSubmitHandler = (e: any) => {
     e.preventDefault();
-    console.log("clicked");
   };
 
   return (

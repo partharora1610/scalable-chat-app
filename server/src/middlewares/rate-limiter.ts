@@ -14,7 +14,7 @@ export const RateLimiter = async (
     return res.status(429).json({ message: "Too many requests" });
   }
 
-  console.log(response);
+  // console.log(response);
 
   if ((response[0][1] as number) > 10) {
     return res.status(429).json({ message: "THAM JAA BHAII!! ARAAM SE" });

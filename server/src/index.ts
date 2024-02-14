@@ -36,25 +36,18 @@ io.use(wrap(sessionMiddleware));
 io.use(socketAuthorization);
 
 io.on("connect", (socket) => {
-  console.log(socket.id);
+  console.log("socket connected!!");
 
-  // @ts-ignore
-  console.log(socket.user);
-
-  socket.on("add-friend", (data, cb) => {
+  socket.on("add_friend", (data, cb) => {
     addFriend({ socket, data, cb });
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnecting", () => {
     disconnectUser(socket);
   });
 });
 
 app.use("/api/auth", authRouter);
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
 
 server.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

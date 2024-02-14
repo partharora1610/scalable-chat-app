@@ -19,6 +19,9 @@ const Sidebar = () => {
       </div>
 
       <div className="flex flex-col gap-4">
+        {friends.length === 0 && (
+          <div className="text-center text-gray-500">No friends found</div>
+        )}
         {friends &&
           friends.map((f: any, index: number) => (
             <div

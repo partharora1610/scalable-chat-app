@@ -104,7 +104,7 @@ export const Register = async (req: Request, res: Response) => {
 
 export const isUserLoggedIn = async (req: Request, res: Response) => {
   try {
-    console.log(req.session.user);
+    // console.log(req.session.user);
 
     if (req.session.user && req.session.user.username) {
       return res.status(200).json({
@@ -113,7 +113,7 @@ export const isUserLoggedIn = async (req: Request, res: Response) => {
       });
     }
 
-    console.log("User not logged in");
+    // console.log("User not logged in");
     res.status(200).json({ loggedIn: false });
   } catch (error) {
     res.status(400).json({ error });

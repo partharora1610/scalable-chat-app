@@ -4,7 +4,14 @@ interface addFriendData {
   data: {
     username: string;
   };
-  cb: (arg: { error: string; done: boolean }) => void;
+  cb: (arg: {
+    error: string;
+    done: boolean;
+    data?: {
+      username: string;
+      userId: string;
+    };
+  }) => void;
   socket: any;
 }
 
@@ -12,8 +19,9 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
   const { username } = data;
 
   const friendUser = await redisClient.hgetall(`userId:${username}`);
+  console.log("friendUser", friendUser);
 
-  if (!friendUser) {
+  if (!friendUser || !friendUser.userId) {
     cb({ error: "User not found", done: false });
     return;
   }
@@ -23,7 +31,6 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
     return;
   }
 
-  // getting the whole freidns list
   const currentFriends = await redisClient.lrange(
     `friends:${socket.user.username}`,
     0,
@@ -35,13 +42,21 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
     return;
   }
 
-  // add the friend to the list
   await redisClient.lpush(
     `friends:${socket.user.username}`,
     [username, friendUser.userId].join(".")
   );
 
-  cb({ error: "", done: true });
+  console.log("friendUser", friendUser);
+
+  cb({
+    error: "",
+    done: true,
+    data: {
+      username: username,
+      userId: friendUser.userId,
+    },
+  });
 };
 
 export const disconnectUser = async (socket: any) => {
@@ -51,6 +66,7 @@ export const disconnectUser = async (socket: any) => {
     "false"
   );
 
+  // Get Friends List
   const friendList = await redisClient.lrange(
     `friends:${socket.user.username}`,
     0,
@@ -63,15 +79,9 @@ export const disconnectUser = async (socket: any) => {
     (friend: { username: string; userId: string }) => friend.userId
   );
 
-  console.log(friendRooms);
-
-  // emitting the event to all the friends of the user that have disconnect
-  // the event will be connected and that will be false.. ..
-
   socket.to(friendRooms).emit("connected", false, socket.user.username);
 };
 
-// Will directly send this to the client
 export const parseFriendList = async (friendList: any) => {
   const newFriendList: any = [];
 
@@ -90,6 +100,6 @@ export const parseFriendList = async (friendList: any) => {
     });
   }
 
-  console.log(newFriendList);
+  // console.log(newFriendList);
   return newFriendList;
 };

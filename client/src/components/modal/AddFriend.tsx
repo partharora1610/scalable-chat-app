@@ -22,6 +22,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import socket from "@/socket";
 import { useSocket } from "@/hooks/useSocket";
+import { useContext } from "react";
+import { FriendContext } from "@/context/FriendContext";
 
 const AddFriend = () => {
   // useSocket();
@@ -50,6 +52,8 @@ const formSchema = z.object({
 });
 
 const ComponentForm = () => {
+  const { setFriends } = useContext(FriendContext);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,19 +62,31 @@ const ComponentForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Cant emit this message
-
     socket.emit(
-      "add-friend",
+      "add_friend",
       {
         username: values.username,
       },
-      ({ error, done }: any) => {
+      ({ error, done, data }: any) => {
         if (!done) {
           form.setError("username", {
             message: error,
           });
           return;
+        }
+
+        if (done) {
+          console.log(data);
+          console.log(data.username, data.userId, data.connected);
+
+          setFriends((prev: any) => [
+            {
+              username: data.username,
+              userId: data.userId,
+              connected: true,
+            },
+            ...prev,
+          ]);
         }
 
         form.reset();

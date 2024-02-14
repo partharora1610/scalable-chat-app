@@ -41,13 +41,10 @@ const socketAuthorization = async (socket: Socket, next: any) => {
       (friend: { username: string; userId: string }) => friend.userId
     );
 
-    if (friendRooms.length > 0) {
-      // cheching if the friends are there
+    if (friendRooms.length > 0)
       // @ts-ignore
       socket.to(friendRooms).emit("connected", false, socket.user.username);
-    }
 
-    // ??
     socket.emit("friends_list", friends);
 
     next();
