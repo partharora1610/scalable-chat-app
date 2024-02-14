@@ -7,11 +7,13 @@ import {
 } from "react";
 
 interface Message {
-  // Define your message properties here
+  from: string | null;
+  to: string;
+  message: string;
 }
 
 interface MessageContextInterface {
-  messages: any[];
+  messages: Message[];
   setMessages: Dispatch<SetStateAction<Message[]>>;
 }
 

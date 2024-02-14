@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 interface FriendContextInterface {
   friends: any;
@@ -17,6 +17,10 @@ export const FriendContext = createContext<FriendContextInterface>({
 const FriendContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState();
+
+  useEffect(() => {
+    setSelectedFriend(friends[0]);
+  }, [friends]);
 
   return (
     <FriendContext.Provider

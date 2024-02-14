@@ -8,7 +8,7 @@ const Sidebar = () => {
     useContext(FriendContext);
 
   return (
-    <div className="col-span-1  px-6 py-8">
+    <div className="col-span-1 px-6 py-8 border-r-2 border-slate-200">
       <div className="mb-8">
         <Input placeholder="Search" className="bg-indigo-100 rounded-lg py-6" />
       </div>
@@ -28,15 +28,24 @@ const Sidebar = () => {
                 setSelectedFriend(f);
               }}
               key={index}
-              className={`cursor-pointer flex items-center gap-4 hover:bg-slate-100 p-2 rounded-md ${
+              className={`cursor-pointer flex items-start gap-4 hover:bg-slate-100 p-4 rounded-md  ${
                 selectedFriend?.userId == f?.userId ? "bg-slate-100" : ""
               }`}
             >
-              <div className="w-12 h-12 bg-indigo-300 rounded-lg"></div>
+              <div className="w-16 h-16 bg-indigo-300 rounded-lg"></div>
               <div>
-                <h4 className="font-semibold">{f.username}</h4>
+                <h4 className="font-semibold mb-2">
+                  {f.username.toUpperCase()}
+                </h4>
                 <p className="text-sm text-gray-500">
-                  {f.connected ? "Online" : "Offline"}
+                  <div className="flex gap-2 items-center">
+                    <div
+                      className={`h-2 w-2 rounded-full ${
+                        f.connected ? "bg-green-800" : "bg-red-800"
+                      }`}
+                    ></div>
+                    <p>{f.connected ? "Online" : "Offline"}</p>
+                  </div>
                 </p>
               </div>
             </div>

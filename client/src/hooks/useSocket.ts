@@ -17,11 +17,6 @@ export const useSocket = () => {
       setFriends(data);
     });
 
-    // socket.on("messages", (data: any) => {
-    //   console.log("messages", data);
-    //   setMessages(data);
-    // });
-
     socket.on("connected", (status, username) => {
       setFriends((prev: any) =>
         prev.map((f: any) =>

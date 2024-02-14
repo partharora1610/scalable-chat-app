@@ -41,12 +41,10 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
     return;
   }
 
-  // Also add the friend to the other user friends list....
-
-  // await redisClient.lpush(
-  // `friends:${username}`,
-  // [socket.user.username, socket.user.userId].join(".")
-  // );
+  await redisClient.lpush(
+    `friends:${username}`,
+    [socket.user.username, socket.user.userId].join(".")
+  );
 
   await redisClient.lpush(
     `friends:${socket.user.username}`,
@@ -72,7 +70,6 @@ export const disconnectUser = async (socket: any) => {
     "false"
   );
 
-  // Get Friends List
   const friendList = await redisClient.lrange(
     `friends:${socket.user.username}`,
     0,
@@ -115,10 +112,18 @@ export const messageDmHandler = async ({ data, socket }: any) => {
     to: data.data.to,
     from: socket.user.userId,
     message: data.data.message,
+    timestamp: Date.now(),
   };
 
-  const messageString = [message.to, message.from, message.message].join(".");
+  const messageString = [
+    message.to,
+    message.from,
+    message.message,
+    message.timestamp,
+  ].join(".");
+
   await redisClient.lpush(`chat:${message.to}`, messageString);
   await redisClient.lpush(`chat:${message.from}`, messageString);
+
   socket.to(message.to).emit("dm_server", message);
 };

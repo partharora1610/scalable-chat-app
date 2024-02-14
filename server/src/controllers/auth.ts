@@ -104,8 +104,6 @@ export const Register = async (req: Request, res: Response) => {
 
 export const isUserLoggedIn = async (req: Request, res: Response) => {
   try {
-    // console.log(req.session.user);
-
     if (req.session.user && req.session.user.username) {
       return res.status(200).json({
         loggedIn: true,

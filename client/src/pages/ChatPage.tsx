@@ -6,16 +6,16 @@ import { FriendContext } from "@/context/FriendContext";
 import { MessageContext } from "@/context/MessagesContext";
 import { useSocket } from "@/hooks/useSocket";
 import socket from "@/socket";
+import { sortMessagesByTimestamp, timestampTo24HourClock } from "@/utils";
 import { useContext, useState } from "react";
 
 const ChatPage = () => {
   const [message, setMessage] = useState("");
   const { setMessages, messages } = useContext(MessageContext);
 
-  const { selectedFriend, friends } = useContext(FriendContext);
+  const { selectedFriend } = useContext(FriendContext);
 
-  console.log(messages);
-  console.log(friends);
+  const sortedMessgaes = sortMessagesByTimestamp(messages);
 
   useSocket();
 
@@ -42,7 +42,6 @@ const ChatPage = () => {
       <div className="grid grid-cols-6 h-full">
         <Sidebar />
 
-        {/* CHAT BOX */}
         <div className=" col-span-5 px-8">
           {/* <div className="bg-slate-50 mb-8 m-auto p-4 flex justify-between items-center">
             <div>
@@ -52,31 +51,33 @@ const ChatPage = () => {
             <div>Actions</div>
           </div> */}
 
-          <div className="h-[100%] p-12 bg-red-100 flex flex-col justify-end">
+          <div className="h-[100%] p-12  flex flex-col justify-end">
             <div className="flex flex-col gap-4">
-              hello
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center gap-4 ${
-                    message.to !== null || message.to !== selectedFriend.userId
-                      ? "justify-end"
-                      : ""
-                  }`}
-                >
+              {sortedMessgaes.map((message, index) => {
+                return (
                   <div
-                    className={`p-4 rounded-md ${
-                      message.to !== null ||
-                      message.to !== selectedFriend.userId
-                        ? "bg-indigo-500 text-white"
-                        : "bg-slate-200"
+                    key={index}
+                    className={`flex items-center gap-6 ${
+                      message.from != selectedFriend?.userId
+                        ? "justify-end"
+                        : ""
                     }`}
                   >
-                    {message.message}
+                    <div className="flex flex-col gap-2 text-slate-600 items-end ">
+                      <div
+                        className={`p-4 rounded-md ${
+                          message.from != selectedFriend?.userId
+                            ? "bg-indigo-500 text-white"
+                            : "bg-slate-200"
+                        }`}
+                      >
+                        {message.message}
+                      </div>
+                      <div>{timestampTo24HourClock(message.timestamp)}</div>
+                    </div>
                   </div>
-                  {/* <p className="text-xs text-gray-500">{message.time}</p> */}
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="mt-4">
               <form action="" onSubmit={formSubmitHandler}>

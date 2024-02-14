@@ -10,17 +10,6 @@ let redisStore = new RedisStore({
   prefix: "sess:",
   disableTouch: false,
 });
-
-declare module "express-session" {
-  interface SessionData {
-    user: {
-      username: string;
-      id: number;
-      userId: string;
-    };
-  }
-}
-
 const sessionMiddleware = session({
   store: redisStore as any,
   secret: process.env.SESSION_SECRET!,
