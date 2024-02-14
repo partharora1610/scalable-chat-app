@@ -4,9 +4,8 @@ import AddFriend from "../modal/AddFriend";
 import { FriendContext } from "@/context/FriendContext";
 
 const Sidebar = () => {
-  const { friends } = useContext(FriendContext);
-
-  console.log(friends);
+  const { friends, selectedFriend, setSelectedFriend } =
+    useContext(FriendContext);
 
   return (
     <div className="col-span-1  px-6 py-8">
@@ -25,8 +24,13 @@ const Sidebar = () => {
         {friends &&
           friends.map((f: any, index: number) => (
             <div
+              onClick={() => {
+                setSelectedFriend(f);
+              }}
               key={index}
-              className="cursor-pointer flex items-center gap-4 hover:bg-slate-100 p-2 rounded-md"
+              className={`cursor-pointer flex items-center gap-4 hover:bg-slate-100 p-2 rounded-md ${
+                selectedFriend?.userId == f?.userId ? "bg-slate-100" : ""
+              }`}
             >
               <div className="w-12 h-12 bg-indigo-300 rounded-lg"></div>
               <div>

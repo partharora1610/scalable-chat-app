@@ -37,8 +37,6 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/login",

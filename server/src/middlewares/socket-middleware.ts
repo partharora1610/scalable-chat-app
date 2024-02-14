@@ -47,10 +47,36 @@ const socketAuthorization = async (socket: Socket, next: any) => {
 
     socket.emit("friends_list", friends);
 
+    const messagesStr = await redisClient.lrange(
+      // @ts-ignore
+      `chat:${socket.user.userId}`,
+      0,
+      -1
+    );
+
+    const messages = parseMessages(messagesStr);
+
+    socket.emit("messages_list", messages);
+
     next();
   } catch (error) {
     next(new Error("Invalid token"));
   }
+};
+
+export const parseMessages = (messages: string[]) => {
+  const parsedMessages = messages.map((m: string) => {
+    const array = m.split(".");
+    return {
+      to: array[0],
+      from: array[1],
+      message: array[2],
+    };
+  });
+
+  console.log(parsedMessages);
+
+  return parsedMessages;
 };
 
 export default socketAuthorization;

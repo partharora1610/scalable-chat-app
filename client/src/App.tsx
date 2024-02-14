@@ -1,5 +1,6 @@
 import UserContext from "./context/AccountContext";
 import FriendContextProvider from "./context/FriendContext";
+import MessageContextProvider from "./context/MessagesContext";
 import Views from "./pages/Views";
 
 function App() {
@@ -7,7 +8,9 @@ function App() {
     <>
       <UserContext>
         <FriendContextProvider>
-          <Views />
+          <MessageContextProvider>
+            <Views />
+          </MessageContextProvider>
         </FriendContextProvider>
       </UserContext>
     </>

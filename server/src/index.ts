@@ -6,7 +6,11 @@ import helmet from "helmet";
 import authRouter from "./routes/authRouter";
 import sessionMiddleware, { wrap } from "./middlewares/session-middleware";
 import socketAuthorization from "./middlewares/socket-middleware";
-import { addFriend, disconnectUser } from "./controllers/socket";
+import {
+  addFriend,
+  disconnectUser,
+  messageDmHandler,
+} from "./controllers/socket";
 
 dotenv.config();
 
@@ -44,6 +48,10 @@ io.on("connect", (socket) => {
 
   socket.on("disconnecting", () => {
     disconnectUser(socket);
+  });
+
+  socket.on("message_dm", (data) => {
+    messageDmHandler({ data, socket });
   });
 });
 

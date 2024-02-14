@@ -76,9 +76,6 @@ const ComponentForm = () => {
         }
 
         if (done) {
-          console.log(data);
-          console.log(data.username, data.userId, data.connected);
-
           setFriends((prev: any) => [
             {
               username: data.username,

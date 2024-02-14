@@ -19,7 +19,6 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
   const { username } = data;
 
   const friendUser = await redisClient.hgetall(`userId:${username}`);
-  console.log("friendUser", friendUser);
 
   if (!friendUser || !friendUser.userId) {
     cb({ error: "User not found", done: false });
@@ -41,6 +40,13 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
     cb({ error: "You are already friends", done: false });
     return;
   }
+
+  // Also add the friend to the other user friends list....
+
+  // await redisClient.lpush(
+  // `friends:${username}`,
+  // [socket.user.username, socket.user.userId].join(".")
+  // );
 
   await redisClient.lpush(
     `friends:${socket.user.username}`,
@@ -102,4 +108,17 @@ export const parseFriendList = async (friendList: any) => {
 
   // console.log(newFriendList);
   return newFriendList;
+};
+
+export const messageDmHandler = async ({ data, socket }: any) => {
+  const message = {
+    to: data.data.to,
+    from: socket.user.userId,
+    message: data.data.message,
+  };
+
+  const messageString = [message.to, message.from, message.message].join(".");
+  await redisClient.lpush(`chat:${message.to}`, messageString);
+  await redisClient.lpush(`chat:${message.from}`, messageString);
+  socket.to(message.to).emit("dm_server", message);
 };

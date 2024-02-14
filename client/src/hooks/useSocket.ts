@@ -1,25 +1,26 @@
 import { AccountContext } from "@/context/AccountContext";
 import { FriendContext } from "@/context/FriendContext";
+import { MessageContext } from "@/context/MessagesContext";
 import socket from "@/socket";
 import { useContext, useEffect } from "react";
 
 export const useSocket = () => {
-  const { setFriends, friends } = useContext(FriendContext);
+  const { setFriends } = useContext(FriendContext);
   const { setUser } = useContext(AccountContext);
+  const { setMessages } = useContext(MessageContext);
 
   useEffect(() => {
     socket.connect();
 
     socket.on("friends_list", (data) => {
-      // console.log("friends_list_old", data);
-      // setFriends((prev: any) => [
-      //   ...prev,
-      //   { username: data.username, userId: data.userId, connected: true },
-      // ]);
-      // console.log("friends_list_new", friends);
       console.log("friends_list", data);
       setFriends(data);
     });
+
+    // socket.on("messages", (data: any) => {
+    //   console.log("messages", data);
+    //   setMessages(data);
+    // });
 
     socket.on("connected", (status, username) => {
       setFriends((prev: any) =>
@@ -35,8 +36,22 @@ export const useSocket = () => {
       });
     });
 
+    socket.on("dm_server", (message: any) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    socket.on("messages_list", (messages: any) => {
+      console.log("messages_list");
+      console.log(messages);
+      setMessages(messages);
+    });
+
     return () => {
       socket.off("connect_error");
+      socket.off("connected");
+      socket.off("messages");
+      socket.off("friends_list");
+      socket.off("dm.");
     };
   }, [setUser]);
 };
