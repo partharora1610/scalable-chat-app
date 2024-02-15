@@ -4,6 +4,14 @@ Welcome to our Chat App! This is a simple messaging application built with Vite 
 
 ### SET UP LOCALLY
 
+First cd into both the client and server folder
+
+Run the command to install node modules
+npm i
+
+Run the project locally
+npm run dev
+
 ### Features
 
 - Real-time messaging
