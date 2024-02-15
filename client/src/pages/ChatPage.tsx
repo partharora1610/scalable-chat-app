@@ -1,6 +1,7 @@
 import Sidebar from "@/components/shared/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AccountContext } from "@/context/AccountContext";
 import { FriendContext } from "@/context/FriendContext";
 import { MessageContext } from "@/context/MessagesContext";
 import { useSocket } from "@/hooks/useSocket";
@@ -12,6 +13,7 @@ const ChatPage = () => {
   useSocket();
   const [message, setMessage] = useState("");
   const { setMessages, messages } = useContext(MessageContext);
+  const { user } = useContext(AccountContext);
   const { selectedFriend, global, globalMessages, setGlobalMessages } =
     useContext(FriendContext);
   const bottomDiv = useRef<HTMLDivElement>(null);
@@ -36,8 +38,9 @@ const ChatPage = () => {
   const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (message.trim() === "") return;
+
     if (global) {
-      console.log("here");
       socket.emit("message_global", {
         data: {
           message: message,
@@ -77,10 +80,9 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (bottomDiv.current) {
-      console.log("bottomDiv.current");
       bottomDiv.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, globalMessages]);
 
   return (
     <div className="bg-white h-screen flex overflow-hidden">
@@ -90,6 +92,7 @@ const ChatPage = () => {
 
       <div className="w-full">
         <div className="h-[100%] p-12  flex flex-col justify-end">
+          {/* This is the TOP INFO BAR */}
           {!global && (
             <div className="bg-slate-100 mb-8 m-auto rounded-full py-8 px-12 flex justify-between items-center w-full">
               <div className="flex gap-2 items-center justify-center">
@@ -112,6 +115,8 @@ const ChatPage = () => {
               </div>
             </div>
           )}
+
+          {/* This is the CHAT BOX */}
           <div className="flex flex-col gap-4 h-full overflow-hidden overflow-y-auto hs">
             {convertedMessages.map((converted) => {
               return (
@@ -124,7 +129,8 @@ const ChatPage = () => {
                           <div
                             key={index}
                             className={`flex items-center gap-6 mb-3 ${
-                              message.from != selectedFriend?.userId
+                              message.from == user?.userId ||
+                              message.from == null
                                 ? "justify-end"
                                 : ""
                             }`}
@@ -132,7 +138,8 @@ const ChatPage = () => {
                             <div className="flex flex-col gap-2 text-slate-600 items-end ">
                               <div
                                 className={`p-4 rounded-md ${
-                                  message.from != selectedFriend?.userId
+                                  message.from == user?.userId ||
+                                  message.from == null
                                     ? "bg-indigo-500 text-white"
                                     : "bg-slate-200"
                                 }`}

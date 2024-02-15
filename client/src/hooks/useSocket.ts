@@ -39,8 +39,6 @@ export const useSocket = () => {
     });
 
     socket.on("message_global_list", (message: any) => {
-      console.log("from message_global_list");
-      console.log(message);
       setGlobalMessages(message);
     });
 

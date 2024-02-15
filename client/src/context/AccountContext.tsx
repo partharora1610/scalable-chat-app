@@ -2,9 +2,20 @@ import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const AccountContext = createContext({
+interface User {
+  loggedIn: boolean;
+  username?: string;
+  userId?: string;
+}
+
+interface AccountContextType {
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
+}
+
+export const AccountContext = createContext<AccountContextType>({
   user: { loggedIn: false },
-  setUser: (user: any) => {},
+  setUser: () => {},
 });
 
 const UserContext = ({ children }: { children: React.ReactNode }) => {
@@ -27,7 +38,7 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
             withCredentials: true,
           }
         );
-
+        console.log(response);
         if (response.status == 200) {
           setUser({ ...response.data });
           navigate("/chat");

@@ -23,10 +23,9 @@ import { z } from "zod";
 import socket from "@/socket";
 import { useContext } from "react";
 import { FriendContext } from "@/context/FriendContext";
+import { useToast } from "../ui/use-toast";
 
 const AddFriend = () => {
-  // useSocket();
-
   return (
     <Dialog>
       <DialogTrigger className="bg-indigo-500 text-white rounded-md w-full py-3">
@@ -52,6 +51,7 @@ const formSchema = z.object({
 
 const ComponentForm = () => {
   const { setFriends } = useContext(FriendContext);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,6 +84,10 @@ const ComponentForm = () => {
             ...prev,
           ]);
         }
+        toast({
+          title: "You added a friend",
+          variant: "default",
+        });
 
         form.reset();
       }

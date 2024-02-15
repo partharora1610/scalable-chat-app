@@ -36,6 +36,7 @@ export const Login = async (req: Request, res: Response) => {
       loggedIn: true,
       status: "success",
       user: existingUser,
+      userId: existingUser.userId,
     });
   } catch (error) {
     res.status(400).json({ error });
@@ -83,6 +84,7 @@ export const Register = async (req: Request, res: Response) => {
       loggedIn: true,
       status: "success",
       user: newUser,
+      userId: newUser.userId,
     });
   } catch (error) {
     res.status(400).json({ error });
@@ -92,9 +94,14 @@ export const Register = async (req: Request, res: Response) => {
 export const isUserLoggedIn = async (req: Request, res: Response) => {
   try {
     if (req.session.user && req.session.user.username) {
+      const existingUser = await db.user.findUnique({
+        where: { username: req.session.user.username },
+      });
+
       return res.status(200).json({
         loggedIn: true,
         username: req.session.user.username,
+        userId: req.session.user.userId,
       });
     }
 

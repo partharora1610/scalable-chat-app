@@ -2,8 +2,11 @@ import { FriendContext } from "@/context/FriendContext";
 import socket from "@/socket";
 import { Globe } from "lucide-react";
 import { useContext } from "react";
+import { useToast } from "./ui/use-toast";
 
 const GlobalChat = () => {
+  const { toast } = useToast();
+
   const { global, setGlobal, setSelectedFriend } = useContext(FriendContext);
 
   const joinGloablRoom = () => {
@@ -12,14 +15,11 @@ const GlobalChat = () => {
     });
     setGlobal(true);
     setSelectedFriend(null);
-  };
-
-  const leaveGlobalRoom = () => {
-    socket.emit("leave_global_room", {
-      data: "Leaving global room",
+    toast({
+      title: "Joined global room",
+      description: "You have joined the global room",
+      variant: "default",
     });
-    console.log("Leaving global room");
-    setGlobal(false);
   };
 
   return (
@@ -34,11 +34,6 @@ const GlobalChat = () => {
         </div>
         <div>
           <h4 className="font-semibold mb-2">Global Chat</h4>
-          <p className="text-sm text-gray-500">
-            <div className="flex gap-2 items-center">
-              <div className={`h-2 w-2 rounded-full `}></div>
-            </div>
-          </p>
         </div>
       </div>
     </div>

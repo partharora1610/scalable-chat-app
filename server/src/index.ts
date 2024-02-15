@@ -55,16 +55,10 @@ io.on("connect", (socket) => {
   });
 
   socket.on("join_global_room", (data) => {
-    console.log(data);
-    console.log(socket.user.userId);
-
     socket.join("global");
   });
 
   socket.on("leave_global_room", (data) => {
-    console.log(data);
-    console.log(socket.user.userId);
-
     socket.leave("global");
   });
 
