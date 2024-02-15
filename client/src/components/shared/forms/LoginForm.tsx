@@ -67,13 +67,18 @@ export const LoginForm = () => {
   return (
     <div className="w-full h-screen flex flex-col lg:flex-row items-center justify-center bg-gray-100 dark:bg-gray-800">
       <div className="w-full lg:w-1/2 flex justify-center items-center lg:items-start px-6 py-8 lg:px-16 lg:py-0">
-        <img
-          alt="Company Logo"
-          className="aspect-[1/1] overflow-hidden rounded-lg object-contain object-center"
-          height="300"
-          src="/placeholder.svg"
-          width="300"
-        />
+        <div className="flex flex-col gap-12">
+          <div className="text-2xl">SAMPLE USERS</div>
+          <div>
+            <div>email: partharora@gmail.com</div>
+            <p>password: partharora </p>
+          </div>
+
+          <div>
+            <div>email: hello@gmail.com</div>
+            <p>password: helloworld </p>
+          </div>
+        </div>
       </div>
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start px-6 py-8 lg:px-16 lg:py-0">
         <div className="space-y-6">

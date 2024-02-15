@@ -3,7 +3,6 @@ import AddFriend from "../modal/AddFriend";
 import { FriendContext } from "@/context/FriendContext";
 import GlobalChat from "../GlobalChat";
 import { AccountContext } from "@/context/AccountContext";
-import { Button } from "../ui/button";
 
 const Sidebar = () => {
   const { friends, selectedFriend, setGlobal, setSelectedFriend } =
@@ -15,9 +14,11 @@ const Sidebar = () => {
       <div className="bg-slate-200 p-4 py-6 flex items-center justify-between">
         <div className="flex gap-4  items-center justify-center">
           <div className="w-16 h-16 bg-indigo-300 rounded-lg"></div>
-          <div className="text-xl capitalize font-bold">{user.username}</div>
+          <div className="flex flex-col gap-1">
+            <div className="text-xl capitalize font-bold">{user.username}</div>
+            <p>{friends.length} friends</p>
+          </div>
         </div>
-        <Button variant="destructive">Logout</Button>
       </div>
 
       <div className="col-span-1 px-6 py-4 border-r-2 border-slate-200 ">
