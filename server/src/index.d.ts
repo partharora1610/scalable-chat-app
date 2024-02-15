@@ -22,6 +22,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       REDIS_URI: string;
+      CLIENT_URL: string;
     }
   }
 }
