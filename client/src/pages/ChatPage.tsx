@@ -92,8 +92,7 @@ const ChatPage = () => {
 
       <div className="w-full">
         <div className="h-[100%] p-12  flex flex-col justify-end">
-          {/* This is the TOP INFO BAR */}
-          {!global && (
+          {!global && selectedFriend && (
             <div className="bg-slate-100 mb-8 m-auto rounded-full py-8 px-12 flex justify-between items-center w-full">
               <div className="flex gap-2 items-center justify-center">
                 <div
@@ -116,7 +115,6 @@ const ChatPage = () => {
             </div>
           )}
 
-          {/* This is the CHAT BOX */}
           <div className="flex flex-col gap-4 h-full overflow-hidden overflow-y-auto hs">
             {convertedMessages.map((converted) => {
               return (
@@ -169,7 +167,7 @@ const ChatPage = () => {
                   placeholder="Type a message"
                   className="p-4 py-8"
                 />
-                <Button>Send</Button>
+                <Button disabled={message.trim() === ""}>Send</Button>
               </div>
             </form>
           </div>

@@ -65,42 +65,62 @@ export const LoginForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+    <div className="w-full h-screen flex flex-col lg:flex-row items-center justify-center bg-gray-100 dark:bg-gray-800">
+      <div className="w-full lg:w-1/2 flex justify-center items-center lg:items-start px-6 py-8 lg:px-16 lg:py-0">
+        <img
+          alt="Company Logo"
+          className="aspect-[1/1] overflow-hidden rounded-lg object-contain object-center"
+          height="300"
+          src="/placeholder.svg"
+          width="300"
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+      </div>
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start px-6 py-8 lg:px-16 lg:py-0">
+        <div className="space-y-6">
+          <div className="space-y-2 text-center lg:text-left">
+            <h1 className="text-3xl font-bold">Login in to your account</h1>
+            <p className="text-gray-500 dark:text-gray-400">Or</p>
+          </div>
+          <div className="space-y-4">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8p-8"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="shadcn" {...field} />
+                      </FormControl>
+                      <FormDescription></FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input placeholder="shadcn" {...field} />
+                      </FormControl>
+                      <FormDescription></FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -17,12 +17,13 @@ Welcome to our Chat App! This is a simple messaging application built with Vite 
 - PostgreSQL used for user auth
 
 **TECH STACK**
-Vite
-React
-React Router
-Redis
-PostgreSQL
-Express
+
+- Vite
+- React
+- React Router
+- Redis
+- PostgreSQL
+- Express
 
 ### SAMPLE USERS FOR TESTING
 

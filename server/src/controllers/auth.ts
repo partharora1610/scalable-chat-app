@@ -3,6 +3,7 @@ import bycrptjs from "bcryptjs";
 import { db } from "../db";
 import { v4 as uuidv4 } from "uuid";
 import { loginFormSchema, registerFormSchema } from "../utils/validation";
+import redisClient from "../redis";
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -110,3 +111,5 @@ export const isUserLoggedIn = async (req: Request, res: Response) => {
     res.status(400).json({ error });
   }
 };
+
+export const logoutHandler = (req: Request, res: Response) => {};
