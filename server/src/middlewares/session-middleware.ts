@@ -2,6 +2,8 @@ import RedisStore from "connect-redis";
 import dotenv from "dotenv";
 import session from "express-session";
 import redisClient from "../redis";
+import { Socket } from "socket.io";
+import { NextFunction } from "express";
 
 dotenv.config();
 
@@ -10,6 +12,7 @@ let redisStore = new RedisStore({
   prefix: "sess:",
   disableTouch: false,
 });
+
 const sessionMiddleware = session({
   store: redisStore as any,
   secret: process.env.SESSION_SECRET!,
@@ -24,7 +27,7 @@ const sessionMiddleware = session({
   },
 });
 
-export const wrap = (middleware: any) => (socket: any, next: any) => {
+export const wrap = (middleware: any) => (socket: Socket, next: any) => {
   return middleware(socket.request, {}, next);
 };
 

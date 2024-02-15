@@ -1,19 +1,6 @@
+import { Socket } from "socket.io";
 import redisClient from "../redis";
-
-interface addFriendData {
-  data: {
-    username: string;
-  };
-  cb: (arg: {
-    error: string;
-    done: boolean;
-    data?: {
-      username: string;
-      userId: string;
-    };
-  }) => void;
-  socket: any;
-}
+import { FriendList, addFriendData } from "../types";
 
 export const addFriend = async ({ socket, data, cb }: addFriendData) => {
   const { username } = data;
@@ -63,7 +50,7 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
   });
 };
 
-export const disconnectUser = async (socket: any) => {
+export const disconnectUser = async (socket: Socket) => {
   await redisClient.hset(
     `userId:${socket.user.username}`,
     "connected",
@@ -85,8 +72,8 @@ export const disconnectUser = async (socket: any) => {
   socket.to(friendRooms).emit("connected", false, socket.user.username);
 };
 
-export const parseFriendList = async (friendList: any) => {
-  const newFriendList: any = [];
+export const parseFriendList = async (friendList: string[]) => {
+  const newFriendList: FriendList[] = [];
 
   for (let friend of friendList) {
     const parsedFriend = friend.split(".");
@@ -106,7 +93,19 @@ export const parseFriendList = async (friendList: any) => {
   return newFriendList;
 };
 
-export const messageDmHandler = async ({ data, socket }: any) => {
+export const messageDmHandler = async ({
+  data,
+  socket,
+}: {
+  data: {
+    data: {
+      message: string;
+      to: string;
+      from: string | null;
+    };
+  };
+  socket: Socket;
+}) => {
   const message = {
     to: data.data.to,
     from: socket.user.userId,

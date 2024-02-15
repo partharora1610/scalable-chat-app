@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Input } from "../ui/input";
+// import { Input } from "../ui/input";
 import AddFriend from "../modal/AddFriend";
 import { FriendContext } from "@/context/FriendContext";
 

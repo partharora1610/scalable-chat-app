@@ -1,19 +1,8 @@
 import { Request, Response } from "express";
-import * as z from "zod";
 import bycrptjs from "bcryptjs";
 import { db } from "../db";
 import { v4 as uuidv4 } from "uuid";
-
-const loginFormSchema = z.object({
-  email: z.string().email().min(5).max(255),
-  password: z.string().min(8).max(255),
-});
-
-const registerFormSchema = z.object({
-  email: z.string().email().min(5).max(255),
-  password: z.string().min(8).max(255),
-  username: z.string().min(2).max(255),
-});
+import { loginFormSchema, registerFormSchema } from "../utils/validation";
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -109,7 +98,6 @@ export const isUserLoggedIn = async (req: Request, res: Response) => {
       });
     }
 
-    // console.log("User not logged in");
     res.status(200).json({ loggedIn: false });
   } catch (error) {
     res.status(400).json({ error });

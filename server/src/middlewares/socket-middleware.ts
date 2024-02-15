@@ -1,6 +1,7 @@
 import { Socket } from "socket.io";
 import redisClient from "../redis";
 import { parseFriendList } from "../controllers/socket";
+import { parseMessages } from "../utils";
 
 const socketAuthorization = async (socket: Socket, next: any) => {
   try {
@@ -52,22 +53,6 @@ const socketAuthorization = async (socket: Socket, next: any) => {
   } catch (error) {
     next(new Error("Invalid token"));
   }
-};
-
-export const parseMessages = (messages: string[]) => {
-  const parsedMessages = messages.map((m: string) => {
-    const array = m.split(".");
-    return {
-      to: array[0],
-      from: array[1],
-      message: array[2],
-      timestamp: array[3],
-    };
-  });
-
-  console.log(parsedMessages);
-
-  return parsedMessages;
 };
 
 export default socketAuthorization;

@@ -5,11 +5,7 @@ import { FriendContext } from "@/context/FriendContext";
 import { MessageContext } from "@/context/MessagesContext";
 import { useSocket } from "@/hooks/useSocket";
 import socket from "@/socket";
-import {
-  convertMessagesToObjects,
-  sortMessagesByTimestamp,
-  timestampTo24HourClock,
-} from "@/utils";
+import { restructureMessagesByDate, timestampTo24HourClock } from "@/utils";
 import { useContext, useState } from "react";
 
 const ChatPage = () => {
@@ -18,9 +14,8 @@ const ChatPage = () => {
   const { setMessages, messages } = useContext(MessageContext);
   const { selectedFriend } = useContext(FriendContext);
 
-  const convertedMessages = convertMessagesToObjects(messages);
-
-  console.log(convertedMessages);
+  console.log(messages);
+  const convertedMessages = restructureMessagesByDate(messages);
 
   const formSubmitHandler = (e: any) => {
     e.preventDefault();
