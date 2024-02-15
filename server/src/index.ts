@@ -36,7 +36,9 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
-
+app.get("/health", (req, res) => {
+  return res.status(200);
+});
 io.use(wrap(sessionMiddleware));
 io.use(socketAuthorization);
 
