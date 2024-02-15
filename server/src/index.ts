@@ -11,6 +11,7 @@ import {
   addFriend,
   disconnectUser,
   messageDmHandler,
+  messageGlobalHandler,
 } from "./controllers/socket";
 
 dotenv.config();
@@ -41,8 +42,6 @@ io.use(wrap(sessionMiddleware));
 io.use(socketAuthorization);
 
 io.on("connect", (socket) => {
-  console.log("socket connected!!");
-
   socket.on("add_friend", (data, cb) => {
     addFriend({ socket, data, cb });
   });
@@ -53,6 +52,24 @@ io.on("connect", (socket) => {
 
   socket.on("message_dm", (data) => {
     messageDmHandler({ data, socket });
+  });
+
+  socket.on("join_global_room", (data) => {
+    console.log(data);
+    console.log(socket.user.userId);
+
+    socket.join("global");
+  });
+
+  socket.on("leave_global_room", (data) => {
+    console.log(data);
+    console.log(socket.user.userId);
+
+    socket.leave("global");
+  });
+
+  socket.on("message_global", (data) => {
+    messageGlobalHandler({ data, socket });
   });
 });
 

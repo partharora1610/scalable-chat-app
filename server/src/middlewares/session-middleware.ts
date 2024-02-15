@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import session from "express-session";
 import redisClient from "../redis";
 import { Socket } from "socket.io";
-import { NextFunction } from "express";
 
 dotenv.config();
 

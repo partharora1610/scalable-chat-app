@@ -38,8 +38,6 @@ export const addFriend = async ({ socket, data, cb }: addFriendData) => {
     [username, friendUser.userId].join(".")
   );
 
-  console.log("friendUser", friendUser);
-
   cb({
     error: "",
     done: true,
@@ -91,6 +89,37 @@ export const parseFriendList = async (friendList: string[]) => {
   }
 
   return newFriendList;
+};
+
+export const messageGlobalHandler = async ({
+  data,
+  socket,
+}: {
+  data: {
+    data: {
+      message: string;
+      from: string;
+    };
+  };
+  socket: Socket;
+}) => {
+  const message = {
+    to: "global",
+    from: socket.user.userId,
+    message: data.data.message,
+    timestamp: Date.now(),
+  };
+
+  const messageString = [
+    message.to,
+    message.from,
+    message.message,
+    message.timestamp,
+  ].join(".");
+
+  await redisClient.lpush("chat:global", messageString);
+
+  socket.to("global").emit("message_global", message);
 };
 
 export const messageDmHandler = async ({

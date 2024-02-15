@@ -56,7 +56,6 @@ export const LoginForm = () => {
       );
 
       if (response.status === 200) {
-        // console.log(response.data);
         setUser({ ...response.data });
         navigate("/chat");
       }

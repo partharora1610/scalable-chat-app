@@ -6,19 +6,58 @@ import { MessageContext } from "@/context/MessagesContext";
 import { useSocket } from "@/hooks/useSocket";
 import socket from "@/socket";
 import { restructureMessagesByDate, timestampTo24HourClock } from "@/utils";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 const ChatPage = () => {
   useSocket();
   const [message, setMessage] = useState("");
   const { setMessages, messages } = useContext(MessageContext);
-  const { selectedFriend } = useContext(FriendContext);
+  const { selectedFriend, global, globalMessages, setGlobalMessages } =
+    useContext(FriendContext);
+  const bottomDiv = useRef<HTMLDivElement>(null);
 
-  console.log(messages);
-  const convertedMessages = restructureMessagesByDate(messages);
+  let thisRoomMessages;
 
-  const formSubmitHandler = (e: any) => {
+  if (global) {
+    thisRoomMessages = globalMessages.filter((message: any) => {
+      return message.to == "global" || message.from == "global";
+    });
+  } else {
+    thisRoomMessages = messages.filter((message) => {
+      return (
+        message.to === selectedFriend?.userId ||
+        message.from === selectedFriend?.userId
+      );
+    });
+  }
+
+  const convertedMessages = restructureMessagesByDate(thisRoomMessages);
+
+  const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (global) {
+      console.log("here");
+      socket.emit("message_global", {
+        data: {
+          message: message,
+          from: null,
+        },
+      });
+
+      setGlobalMessages((prev: any) => [
+        ...prev,
+        {
+          to: "global",
+          from: null,
+          message: message,
+          timestamp: Date.now(),
+        },
+      ]);
+
+      setMessage("");
+      return;
+    }
 
     const messageObj = {
       to: selectedFriend.userId,
@@ -36,6 +75,13 @@ const ChatPage = () => {
     setMessage("");
   };
 
+  useEffect(() => {
+    if (bottomDiv.current) {
+      console.log("bottomDiv.current");
+      bottomDiv.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <div className="bg-white h-screen flex overflow-hidden">
       <div className="w-[20vw] h-full">
@@ -44,20 +90,28 @@ const ChatPage = () => {
 
       <div className="w-full">
         <div className="h-[100%] p-12  flex flex-col justify-end">
-          <div className="bg-slate-100 mb-8 m-auto rounded-full py-8 px-12 flex justify-between items-center w-full">
-            <div className="flex gap-2 items-center justify-center">
-              <div
-                className={`h-4 w-4 rounded-full ${
-                  selectedFriend?.connected ? "bg-green-800" : "bg-red-800"
-                }`}
-              ></div>{" "}
-              <div className="font-semibold text-xl">
-                {selectedFriend?.username.toUpperCase()}
+          {!global && (
+            <div className="bg-slate-100 mb-8 m-auto rounded-full py-8 px-12 flex justify-between items-center w-full">
+              <div className="flex gap-2 items-center justify-center">
+                <div
+                  className={`h-4 w-4 rounded-full ${
+                    selectedFriend?.connected ? "bg-green-800" : "bg-red-800"
+                  }`}
+                ></div>
+                <div className="font-semibold text-xl">
+                  {selectedFriend?.username.toUpperCase()}
+                </div>
               </div>
             </div>
+          )}
 
-            <div>Actions</div>
-          </div>
+          {global && (
+            <div className="bg-slate-100 mb-8 m-auto rounded-full py-8 px-12 flex justify-between items-center w-full">
+              <div className="flex gap-2 items-center justify-center">
+                <div className="font-semibold text-xl">Global Chat</div>
+              </div>
+            </div>
+          )}
           <div className="flex flex-col gap-4 h-full overflow-hidden overflow-y-auto hs">
             {convertedMessages.map((converted) => {
               return (
@@ -92,6 +146,7 @@ const ChatPage = () => {
                           </div>
                         );
                       })}
+                      <div ref={bottomDiv} />
                     </div>
                   </div>
                 </>

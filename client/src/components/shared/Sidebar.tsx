@@ -2,19 +2,20 @@ import { useContext } from "react";
 // import { Input } from "../ui/input";
 import AddFriend from "../modal/AddFriend";
 import { FriendContext } from "@/context/FriendContext";
+import GlobalChat from "../GlobalChat";
 
 const Sidebar = () => {
-  const { friends, selectedFriend, setSelectedFriend } =
+  const { friends, selectedFriend, setGlobal, setSelectedFriend } =
     useContext(FriendContext);
 
   return (
     <div className="col-span-1 px-6 py-8 border-r-2 border-slate-200">
-      <div className="mb-8">
-        {/* <Input placeholder="Search" className="bg-indigo-100 rounded-lg py-6" /> */}
-      </div>
+      <div className="mb-8"></div>
       <div className="mb-8 p-2 w-full">
         <AddFriend />
       </div>
+
+      <GlobalChat />
 
       <div className="flex flex-col gap-4">
         <h3 className="font-bold text-xl mb-2 capitalize text-slate-700">
@@ -29,6 +30,7 @@ const Sidebar = () => {
             <div
               onClick={() => {
                 setSelectedFriend(f);
+                setGlobal(false);
               }}
               key={index}
               className={`cursor-pointer flex items-start gap-4 hover:bg-slate-100 p-4 rounded-md  ${

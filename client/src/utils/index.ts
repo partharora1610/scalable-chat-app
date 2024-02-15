@@ -12,7 +12,6 @@ export function restructureMessagesByDate(messages: any[]): any[] {
 
   messages.forEach((message) => {
     const dateKey = new Date(Number(message.timestamp)).toDateString();
-    console.log(dateKey);
 
     if (!messagesByDateMap[dateKey]) {
       messagesByDateMap[dateKey] = [];
@@ -24,8 +23,6 @@ export function restructureMessagesByDate(messages: any[]): any[] {
   for (const date in messagesByDateMap) {
     messagesByDateArray.push({ date, messages: messagesByDateMap[date] });
   }
-
-  console.log(messagesByDateArray);
 
   return messagesByDateArray;
 }

@@ -5,7 +5,7 @@ import socket from "@/socket";
 import { useContext, useEffect } from "react";
 
 export const useSocket = () => {
-  const { setFriends } = useContext(FriendContext);
+  const { setFriends, setGlobalMessages } = useContext(FriendContext);
   const { setUser } = useContext(AccountContext);
   const { setMessages } = useContext(MessageContext);
 
@@ -13,7 +13,6 @@ export const useSocket = () => {
     socket.connect();
 
     socket.on("friends_list", (data) => {
-      console.log("friends_list", data);
       setFriends(data);
     });
 
@@ -36,9 +35,17 @@ export const useSocket = () => {
     });
 
     socket.on("messages_list", (messages: any) => {
-      console.log("messages_list");
-      console.log(messages);
       setMessages(messages);
+    });
+
+    socket.on("message_global_list", (message: any) => {
+      console.log("from message_global_list");
+      console.log(message);
+      setGlobalMessages(message);
+    });
+
+    socket.on("message_global", (message: any) => {
+      setGlobalMessages((prev: any) => [...prev, message]);
     });
 
     return () => {
@@ -46,7 +53,8 @@ export const useSocket = () => {
       socket.off("connected");
       socket.off("messages");
       socket.off("friends_list");
-      socket.off("dm.");
+      socket.off("dm_server");
+      socket.off("message_global");
     };
   }, [setUser]);
 };

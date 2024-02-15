@@ -28,10 +28,7 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
           }
         );
 
-        // console.log(response);
-
         if (response.status == 200) {
-          // console.log(response.data);
           setUser({ ...response.data });
           navigate("/chat");
         }

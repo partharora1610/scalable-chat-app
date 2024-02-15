@@ -45,9 +45,15 @@ const socketAuthorization = async (socket: Socket, next: any) => {
       -1
     );
 
+    const globalMessagesStr = await redisClient.lrange(`chat:global`, 0, -1);
+    console.log(globalMessagesStr);
+
     const messages = parseMessages(messagesStr);
+    const globalMessages = parseMessages(globalMessagesStr);
+    console.log(globalMessages);
 
     socket.emit("messages_list", messages);
+    socket.emit("message_global_list", globalMessages);
 
     next();
   } catch (error) {
