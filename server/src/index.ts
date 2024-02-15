@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+dotenv.config();
 import { Server } from "socket.io";
 import helmet from "helmet";
 import authRouter from "./routes/authRouter";
@@ -13,8 +14,6 @@ import {
   messageDmHandler,
   messageGlobalHandler,
 } from "./controllers/socket";
-
-dotenv.config();
 
 const app = express();
 

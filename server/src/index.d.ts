@@ -18,4 +18,12 @@ declare module "http" {
   }
 }
 
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      REDIS_URI: string;
+    }
+  }
+}
+
 export {};

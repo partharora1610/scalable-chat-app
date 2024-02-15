@@ -1,6 +1,8 @@
 import Redis from "ioredis";
-import RedisStore from "connect-redis";
 
-const redisClient = new Redis();
+const redisClient = new Redis(process.env.REDIS_URI);
+redisClient.on("connect", () => {
+  console.log("connected to redis");
+});
 
 export default redisClient;

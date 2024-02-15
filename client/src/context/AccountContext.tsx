@@ -38,7 +38,6 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
             withCredentials: true,
           }
         );
-        console.log(response);
         if (response.status == 200) {
           setUser({ ...response.data });
           navigate("/chat");
